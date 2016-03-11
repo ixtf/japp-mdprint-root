@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.hengyi.japp.print.client.controller.MdsController">
+    <children>
+        <HBox alignment="CENTER_LEFT" layoutX="-15.0" layoutY="-36.0" maxHeight="-Infinity" minHeight="-Infinity"
+              prefHeight="30.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+              AnchorPane.topAnchor="0.0">
+            <children>
+                <Button layoutX="15.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleSearchMd" text="搜索码单"/>
+                <Button mnemonicParsing="false" onAction="#handlePrintMd" text="打印码单"/>
+                <Button mnemonicParsing="false" onAction="#handlePrintXd" text="打印箱单"/>
+                <Button mnemonicParsing="false" onAction="#handleUpload" text="上传SAP"/>
+                <Button layoutX="162.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleDeleteMd" text="删除码单"/>
+            </children>
+            <padding>
+                <Insets left="5.0"/>
+            </padding>
+        </HBox>
+        <SplitPane dividerPositions="0.4" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0"
+                   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                   AnchorPane.topAnchor="30.0">
+            <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                    <children>
+                        <TableView fx:id="mdTable" editable="true" maxHeight="1.7976931348623157E308"
+                                   maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity"
+                                   prefHeight="96.0" prefWidth="288.0" AnchorPane.bottomAnchor="0.0"
+                                   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <columns>
+                                <TableColumn fx:id="checkBoxColumn" maxWidth="50.0" minWidth="50.0" prefWidth="50.0"
+                                             sortable="false" text="选择">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="checkBox"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn fx:id="uploadedColumn" editable="false" maxWidth="50.0" minWidth="50.0"
+                                             prefWidth="50.0" style="-fx-alignment: CENTER;" text="同步"/>
+                                <TableColumn fx:id="printColumn" editable="false" maxWidth="50.0" minWidth="50.0"
+                                             prefWidth="50.0" style="-fx-alignment: CENTER;" text="打印"/>
+                                <TableColumn editable="false" maxWidth="100.0" minWidth="100.0" prefWidth="100.0"
+                                             style="-fx-alignment: CENTER;" text="码单">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="charg"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn editable="false" maxWidth="100.0" minWidth="100.0" prefWidth="100.0"
+                                             style="-fx-alignment: CENTER;" text="生产日期">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="hsdat"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn editable="false" prefWidth="-1.0" style="-fx-alignment: CENTER;" text="班次">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="sapYmmbanci"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn editable="false" maxWidth="100.0" minWidth="100.0" prefWidth="100.0"
+                                             sortable="false" style="-fx-alignment: CENTER;" text="物料">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="sapMara"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn editable="false" prefWidth="-1.0" sortable="false"
+                                             style="-fx-alignment: CENTER;" text="描述">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="sapMakt"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn editable="false" maxWidth="50.0" minWidth="50.0" prefWidth="50.0"
+                                             sortable="false" style="-fx-alignment: CENTER;" text="工厂">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="sapT001w"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn editable="false" maxWidth="50.0" minWidth="50.0" prefWidth="50.0"
+                                             sortable="false" style="-fx-alignment: CENTER;" text="库存地">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="sapT001l"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn fx:id="zdzflgColumn" editable="false" maxWidth="50.0" minWidth="50.0"
+                                             prefWidth="50.0" sortable="false" style="-fx-alignment: CENTER;"
+                                             text="定重"/>
+                                <TableColumn editable="false" maxWidth="100.0" minWidth="100.0" prefWidth="100.0"
+                                             sortable="false" style="-fx-alignment: CENTER-RIGHT;" text="总毛重">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="zsgwght"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn editable="false" maxWidth="100.0" minWidth="100.0" prefWidth="100.0"
+                                             sortable="false" style="-fx-alignment: CENTER-RIGHT;" text="总净重">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="zsnwght"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn editable="false" maxWidth="50.0" minWidth="50.0" prefWidth="50.0"
+                                             sortable="false" style="-fx-alignment: CENTER-RIGHT;" text="箱数">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="zcanmge"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn editable="false" prefWidth="-1.0" sortable="false"
+                                             style="-fx-alignment: CENTER;" text="纸箱类型">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="sapYmmzhix"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn editable="false" prefWidth="-1.0" sortable="false"
+                                             style="-fx-alignment: CENTER;" text="筒管类型">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="sapYmmtongg"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                            </columns>
+                            <columnResizePolicy>
+                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                            </columnResizePolicy>
+                        </TableView>
+                    </children>
+                </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                    <children>
+                        <TableView editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                                   prefHeight="96.0" prefWidth="288.0" AnchorPane.bottomAnchor="0.0"
+                                   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
+                                   fx:id="xdTable">
+                            <columns>
+                                <TableColumn editable="false" prefWidth="-1.0" sortable="false"
+                                             style="-fx-alignment: CENTER;" text="箱号">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="zboxsnr"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn editable="false" prefWidth="-1.0" sortable="false"
+                                             style="-fx-alignment: CENTER;" text="机号">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="sapYmmmach"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn prefWidth="-1.0" sortable="false" style="-fx-alignment: CENTER-RIGHT;"
+                                             text="筒管数">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="zrolmge"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn prefWidth="-1.0" sortable="false" style="-fx-alignment: CENTER-RIGHT;"
+                                             text="毛重">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="zsgwght"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn prefWidth="-1.0" sortable="false" style="-fx-alignment: CENTER-RIGHT;"
+                                             text="净重">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="zsnwght"/>
+                                    </cellValueFactory>
+                                </TableColumn>
+                            </columns>
+                            <columnResizePolicy>
+                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                            </columnResizePolicy>
+                        </TableView>
+                    </children>
+                </AnchorPane>
+            </items>
+        </SplitPane>
+    </children>
+</AnchorPane>

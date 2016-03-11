@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<AnchorPane fx:id="printPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="502.0" prefWidth="428.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.hengyi.japp.print.controller.MdPrintController">
+    <children>
+        <HBox alignment="CENTER" layoutX="15.0" layoutY="1.0" maxHeight="-Infinity" maxWidth="-Infinity"
+              minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="428.0" AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="3.0">
+            <children>
+                <Text layoutX="75.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="成品入库码单"
+                      AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="1.0">
+                    <font>
+                        <Font name="System Bold" size="14.0"/>
+                    </font>
+                </Text>
+            </children>
+        </HBox>
+        <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                  prefHeight="71.0" prefWidth="340.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                  AnchorPane.topAnchor="23.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="57.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="113.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="57.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="113.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="14.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="14.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="14.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="14.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="14.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <children>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="生产日期：" textAlignment="RIGHT" wrappingWidth="57">
+                    <font>
+                        <Font size="10.0"/>
+                    </font>
+                </Text>
+                <Text layoutX="10.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1">
+                    <font>
+                        <Font size="10.0"/>
+                    </font>
+                </Text>
+                <Text layoutX="30.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="班次："
+                      textAlignment="RIGHT" wrappingWidth="57" GridPane.columnIndex="2">
+                    <font>
+                        <Font size="10.0"/>
+                    </font>
+                </Text>
+                <Text layoutX="70.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="3">
+                    <font>
+                        <Font size="10.0"/>
+                    </font>
+                </Text>
+                <Text layoutX="105.0" layoutY="14.0" strokeType="OUTSIDE" strokeWidth="0.0" text="物料号："
+                      textAlignment="RIGHT" wrappingWidth="57" GridPane.rowIndex="1">
+                    <font>
+                        <Font size="10.0"/>
+                    </font>
+                </Text>
+                <Text layoutX="25.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1"
+                      GridPane.rowIndex="1">
+                    <font>
+                        <Font size="10.0"/>
+                    </font>
+                </Text>
+                <Text layoutX="110.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="工厂："
+                      textAlignment="RIGHT" wrappingWidth="57" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                    <font>
+                        <Font size="10.0"/>
+                    </font>
+                </Text>
+                <Text layoutX="223.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="3"
+                      GridPane.rowIndex="1">
+                    <font>
+                        <Font size="10.0"/>
+                    </font>
+                </Text>
+                <Text layoutX="280.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="品名："
+                      textAlignment="RIGHT" wrappingWidth="57" GridPane.rowIndex="2">
+                    <font>
+                        <Font size="10.0"/>
+                    </font>
+                </Text>
+                <Text layoutX="53.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1"
+                      GridPane.rowIndex="2">
+                    <font>
+                        <Font size="10.0"/>
+                    </font>
+                </Text>
+                <Text layoutX="110.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="规格："
+                      textAlignment="RIGHT" wrappingWidth="57" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                    <font>
+                        <Font size="10.0"/>
+                    </font>
+                </Text>
+                <Text layoutX="223.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="3"
+                      GridPane.rowIndex="2">
+                    <font>
+                        <Font size="10.0"/>
+                    </font>
+                </Text>
+                <Text layoutX="280.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="等级："
+                      textAlignment="RIGHT" wrappingWidth="57" GridPane.rowIndex="3">
+                    <font>
+                        <Font size="10.0"/>
+                    </font>
+                </Text>
+                <Text layoutX="53.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1"
+                      GridPane.rowIndex="3">
+                    <font>
+                        <Font size="10.0"/>
+                    </font>
+                </Text>
+                <Text layoutX="110.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="批号："
+                      textAlignment="RIGHT" wrappingWidth="57" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                    <font>
+                        <Font size="10.0"/>
+                    </font>
+                </Text>
+                <Text layoutX="223.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="3"
+                      GridPane.rowIndex="3">
+                    <font>
+                        <Font size="10.0"/>
+                    </font>
+                </Text>
+                <Text layoutX="280.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="捻向："
+                      textAlignment="RIGHT" wrappingWidth="57" GridPane.rowIndex="4">
+                    <font>
+                        <Font size="10.0"/>
+                    </font>
+                </Text>
+                <Text layoutX="53.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1"
+                      GridPane.rowIndex="4">
+                    <font>
+                        <Font size="10.0"/>
+                    </font>
+                </Text>
+                <Text layoutX="110.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="码单号："
+                      textAlignment="RIGHT" wrappingWidth="57" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                    <font>
+                        <Font size="10.0"/>
+                    </font>
+                </Text>
+                <Text layoutX="223.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="3"
+                      GridPane.rowIndex="4">
+                    <font>
+                        <Font size="10.0"/>
+                    </font>
+                </Text>
+            </children>
+            <padding>
+                <Insets left="43.0"/>
+            </padding>
+        </GridPane>
+        <TableView maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                   prefWidth="340.0" style="-fx-fixed-cell-size: 14;" AnchorPane.leftAnchor="43.0"
+                   AnchorPane.topAnchor="94.0" fx:id="xdTable">
+            <columns>
+                <TableColumn editable="false" minWidth="-Infinity" prefWidth="45.0" sortable="false"
+                             style="-fx-alignment: CENTER;" text="序号"/>
+                <TableColumn editable="false" minWidth="-Infinity" prefWidth="45.0" sortable="false"
+                             style="-fx-alignment: CENTER;" text="箱号"/>
+                <TableColumn editable="false" minWidth="-Infinity" prefWidth="45.0" sortable="false"
+                             style="-fx-alignment: CENTER;" text="机号"/>
+                <TableColumn editable="false" minWidth="-Infinity" prefWidth="47.0" sortable="false"
+                             style="-fx-alignment: CENTER;" text="筒子数"/>
+                <TableColumn editable="false" minWidth="-Infinity" prefWidth="79.0" sortable="false"
+                             style="-fx-alignment: CENTER-RIGHT;" text="毛重"/>
+                <TableColumn editable="false" minWidth="-Infinity" prefWidth="79.0" sortable="false"
+                             style="-fx-alignment: CENTER-RIGHT;" text="净重"/>
+            </columns>
+        </TableView>
+    </children>
+</AnchorPane>

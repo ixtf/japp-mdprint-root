@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<BorderPane id="root" prefHeight="768.0" prefWidth="1024.0" styleClass="mainFxmlClass"
+            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.hengyi.japp.print.client.controller.RootController">
+    <stylesheets>
+        <URL value="@/styles/root.css"/>
+    </stylesheets>
+    <top>
+        <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
+            <menus>
+                <Menu mnemonicParsing="false" text="%charg">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#handleMdNew" text="%new"/>
+                        <MenuItem mnemonicParsing="false" onAction="#handleMdManage" text="%manage"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="%help">
+                    <items>
+                        <MenuItem fx:id="logout" mnemonicParsing="false" onAction="#logout" text="%logout"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <bottom>
+        <HBox fx:id="syncDataHBox" visible="false">
+            <children>
+                <Label text="SAP数据同步：">
+                    <padding>
+                        <Insets left="5.0"/>
+                    </padding>
+                </Label>
+                <ProgressBar fx:id="syncDataPb" maxWidth="1.7976931348623157E308" progress="0.0"
+                             BorderPane.alignment="CENTER" HBox.hgrow="ALWAYS">
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                    <padding>
+                        <Insets right="5.0"/>
+                    </padding>
+                </ProgressBar>
+            </children>
+        </HBox>
+    </bottom>
+</BorderPane>
