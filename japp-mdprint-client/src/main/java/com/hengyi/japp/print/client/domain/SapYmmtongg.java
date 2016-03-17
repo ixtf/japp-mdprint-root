@@ -55,4 +55,9 @@ public class SapYmmtongg {
     public void setZtgwght(BigDecimal ztgwght) {
         this.ztgwght.set(ztgwght);
     }
+
+    @Override
+    public String toString() {
+        return getZtgtype() + "\t" + getZtgspec();
+    }
 }

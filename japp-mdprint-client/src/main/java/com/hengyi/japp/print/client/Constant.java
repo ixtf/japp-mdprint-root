@@ -17,8 +17,10 @@ import org.glassfish.jersey.client.ClientConfig;
 
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+import java.math.BigDecimal;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.function.BiFunction;
 
 /**
  * @author jzb
@@ -44,6 +46,9 @@ public class Constant {
         public static final String MD_SEARCH = "/fxml/md_search.fxml";
         public static final String MD_PRINT = "/fxml/md_print_3000.fxml";
     }
+
+    public static final BiFunction<Md, Xd, BigDecimal> tareF = (md, xd) -> md.getSapYmmzhix().getYzxwght()
+            .add(md.getSapYmmtongg().getZtgwght().multiply(BigDecimal.valueOf(xd.getZrolmge())));
 
     public static final Callback<ListView<SapT001w>, ListCell<SapT001w>> SAPT001WCELLFACTORY = l -> new ListCell<SapT001w>() {
         @Override

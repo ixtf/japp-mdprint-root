@@ -5,11 +5,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class My extends Application {
-
+/**
+ * Created by jzb on 16-3-15.
+ */
+public class ControlTest extends Application {
     /**
      * @param args the command line arguments
      */
@@ -22,7 +25,7 @@ public class My extends Application {
         primaryStage.setTitle("AutoFillTextBox without FilterMode");
 
         //SAMPLE DATA
-        ObservableList data = FXCollections.observableArrayList();
+        ObservableList<String> data = FXCollections.observableArrayList();
         String[] s = new String[]{"apple", "ball", "cat", "doll", "elephant",
                 "fight", "georgeous", "height", "ice", "jug",
                 "aplogize", "bank", "call", "done", "ego",
@@ -37,17 +40,25 @@ public class My extends Application {
         }
 
         //Layout
-        HBox hbox = new HBox();
-        hbox.setSpacing(10);
+        VBox vbox = new VBox();
+        vbox.setSpacing(10);
         //CustomControl
         final AutoFillTextBox box = new AutoFillTextBox(data);
+        box.setListLimit(10);
+        box.setFilterMode(true);
+        box.getListview().setVisible(false);
+
+        //Here we are using external Listview instead of AutoFillTextBox's
+        ListView list = new ListView();
+        list.itemsProperty().bind(box.getListview().itemsProperty());
+
         //Label
-        Label l = new Label("AutoFillTextBox: ");
+        Label l = new Label("AutoFillTextBox: (Filter Mode 'ON')");
         l.translateYProperty().set(5);
         l.translateXProperty().set(5);
 
-        hbox.getChildren().addAll(l, box);
-        Scene scene = new Scene(hbox, 300, 200);
+        vbox.getChildren().addAll(l, box, list);
+        Scene scene = new Scene(vbox, 300, 200);
 
         primaryStage.setScene(scene);
         scene.getStylesheets().add(getClass().getResource("control.css").toExternalForm());

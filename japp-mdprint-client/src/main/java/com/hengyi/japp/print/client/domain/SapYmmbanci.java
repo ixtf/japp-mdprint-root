@@ -38,4 +38,9 @@ public class SapYmmbanci {
     public void setBtext(String btext) {
         this.btext.set(btext);
     }
+
+    @Override
+    public String toString() {
+        return getZbanci() + "\t" + getBtext();
+    }
 }

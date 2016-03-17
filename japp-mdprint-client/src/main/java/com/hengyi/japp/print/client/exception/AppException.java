@@ -8,7 +8,7 @@ public class AppException extends Exception {
         super(cause);
     }
 
-    public AppException() {
-        super();
+    public AppException(String error) {
+        super(error);
     }
 }

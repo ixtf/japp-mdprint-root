@@ -24,6 +24,13 @@ public class RootController {
     private void handleMdNew() throws Exception {
         Md md = new Md();
         md.setSapT001(sapT001);
+        md.setSapYmmbanci(sapT001.getSapYmmbancis().get(0));
+        md.setSapZpackage(sapT001.getSapZpackages().get(0));
+        md.setSapT001w(sapT001.getSapT001ws().get(0));
+        md.setSapT001l(sapT001.getSapT001ws().get(0).getSapT001ls().get(0));
+        md.setSapYmmzhix(sapT001.getSapYmmzhixs().get(0));
+        md.setSapYmmtongg(sapT001.getSapYmmtonggs().get(0));
+        md.setSapYmmmach(sapT001.getSapYmmmachs().get(0));
         gotoMd(md);
     }
 

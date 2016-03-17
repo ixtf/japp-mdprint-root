@@ -5,6 +5,8 @@
  */
 package com.hengyi.japp.print.client.domain;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -14,6 +16,10 @@ import javafx.collections.ObservableList;
 
 import java.util.List;
 
+import static com.hengyi.japp.print.client.Constant.destination;
+import static com.hengyi.japp.print.client.Constant.objectMapper;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
+
 /**
  * @author Administrator
  */
@@ -21,11 +27,25 @@ public class SapT001 {
     private final StringProperty bukrs = new SimpleStringProperty();
     private final StringProperty butxt = new SimpleStringProperty();
     private final ListProperty<SapYmmbanci> sapYmmbancis = new SimpleListProperty<>();
-    private final ListProperty<SapT001w> sapT001ws = new SimpleListProperty<>();
     private final ListProperty<SapZpackage> sapZpackages = new SimpleListProperty<>();
+    private final ListProperty<SapT001w> sapT001ws = new SimpleListProperty<>();
     private final ListProperty<SapYmmzhix> sapYmmzhixs = new SimpleListProperty<>();
     private final ListProperty<SapYmmtongg> sapYmmtonggs = new SimpleListProperty<>();
     private final ListProperty<SapYmmmach> sapYmmmachs = new SimpleListProperty<>();
+
+    public void fetchSapYmmbancis() throws Exception {
+        if (sapYmmbancis.get() != null) return;
+        String json = destination.path("sapT001s").path(getBukrs()).path("sapYmmbancis").request(APPLICATION_JSON_TYPE).get(String.class);
+        List<SapYmmbanci> list = objectMapper.readValue(json, TypeFactory.defaultInstance().constructCollectionType(List.class, SapYmmbanci.class));
+        sapYmmbancis.set(FXCollections.observableArrayList(list));
+    }
+
+    public void fetchSapZpackages() throws Exception {
+        if (sapZpackages.get() != null) return;
+        String json = destination.path("sapT001s").path(getBukrs()).path("sapZpackages").request(APPLICATION_JSON_TYPE).get(String.class);
+        List<SapZpackage> list = objectMapper.readValue(json, TypeFactory.defaultInstance().constructCollectionType(List.class, SapZpackage.class));
+        sapZpackages.set(FXCollections.observableArrayList(list));
+    }
 
     public String getBukrs() {
         return bukrs.get();
@@ -126,5 +146,12 @@ public class SapT001 {
     @Override
     public String toString() {
         return getButxt();
+    }
+
+
+    public List<SapMara> autoCompleteSapMara(String q) throws Exception {
+        String json = destination.path("sapT001s").path(getBukrs()).path("sapMaras").queryParam("q", q).queryParam("pageSize", 10).request(APPLICATION_JSON_TYPE).get(String.class);
+        JsonNode list = objectMapper.readTree(json).get("result");
+        return objectMapper.convertValue(list, TypeFactory.defaultInstance().constructCollectionType(List.class, SapMara.class));
     }
 }

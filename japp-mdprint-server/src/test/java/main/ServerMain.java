@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by Administrator on 2016/2/28.
  */
-public class Main {
-    public static Logger log = LoggerFactory.getLogger(Main.class);
+public class ServerMain {
+    public static Logger log = LoggerFactory.getLogger(ServerMain.class);
 
     public static void main(String[] args) throws Exception {
         MyService.windowsService(null);

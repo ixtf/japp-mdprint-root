@@ -88,8 +88,8 @@
                                 <DatePicker fx:id="hsdatField" GridPane.columnIndex="1"/>
                                 <ComboBox fx:id="sapYmmbanciField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                                 <TextField fx:id="matnrField" layoutX="131.0" layoutY="333.0" maxWidth="-Infinity"
-                                           onKeyReleased="#autoCompleteSapMakt" promptText="可输入批号、规格、描述……"
-                                           GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                           onKeyReleased="#autoCompleteSapMara" prefHeight="29.0" prefWidth="292.0"
+                                           promptText="可输入批号、规格、描述……" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
                                 <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1"
                                       GridPane.rowIndex="9">
                                     <children>
@@ -263,8 +263,12 @@
                                              style="-fx-alignment: CENTER-RIGHT;" text="筒管数"/>
                                 <TableColumn fx:id="zsgwghtColumn" prefWidth="-1.0" sortable="false"
                                              style="-fx-alignment: CENTER-RIGHT;" text="毛重"/>
-                                <TableColumn fx:id="zsnwghtColumn" prefWidth="-1.0" sortable="false"
-                                             style="-fx-alignment: CENTER-RIGHT;" text="净重"/>
+                                <TableColumn prefWidth="-1.0" sortable="false" style="-fx-alignment: CENTER-RIGHT;"
+                                             text="净重">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="zsnwght"/>
+                                    </cellValueFactory>
+                                </TableColumn>
                             </columns>
                         </TableView>
                     </children>
