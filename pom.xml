@@ -34,7 +34,11 @@
                 <artifactId>lmdbjni-linux64</artifactId>
                 <version>0.4.6</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.deephacks.lmdbjni</groupId>
+                <artifactId>lmdbjni-win64</artifactId>
+                <version>0.4.6</version>
+            </dependency>
             <dependency>
                 <groupId>com.hengyi</groupId>
                 <artifactId>japp-commons-sap</artifactId>

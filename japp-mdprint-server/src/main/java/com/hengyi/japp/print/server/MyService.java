@@ -23,10 +23,10 @@ import static com.hengyi.japp.print.server.Constant.putByKeyF;
  * Created by Administrator on 2016/2/27.
  */
 public class MyService {
+    public static final String basePath = "d:/japp-mdprint";
     //在服务的构造函数中要用到，必须在new service之前创建
     public static final EventBus eventBus = new EventBus();
     //全局锁,写操作需全局阻塞
-    public static final String basePath = "d:/japp-mdprint";
     public static final Lock gLock = new ReentrantLock();
     public static final ObjectMapper objectMapper = new ObjectMapper();
     private static final MyService instance = new MyService();
