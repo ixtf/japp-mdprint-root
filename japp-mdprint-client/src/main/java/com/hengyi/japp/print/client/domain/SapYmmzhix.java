@@ -55,4 +55,9 @@ public class SapYmmzhix {
     public void setYzxwght(BigDecimal yzxwght) {
         this.yzxwght.set(yzxwght);
     }
+
+    @Override
+    public String toString() {
+        return getYzxtype() + "\t" + getYzxspec();
+    }
 }

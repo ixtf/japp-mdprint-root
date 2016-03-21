@@ -18,7 +18,7 @@ import java.io.StringWriter;
  */
 public class Util {
 
-    public static void showErrorDialog(Exception ex) {
+    public static void alertDialog(Exception ex) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("错误");
         alert.setContentText(ex.getLocalizedMessage());
@@ -26,7 +26,7 @@ public class Util {
     }
 
     public static Dialog<ButtonType> exceptionDialog(Throwable th) {
-        Dialog<ButtonType> dialog = new Dialog<ButtonType>();
+        Dialog<ButtonType> dialog = new Dialog<>();
 
         dialog.setTitle("Program exception");
 

@@ -44,7 +44,20 @@ public class SapService extends BaseSapService {
         return null;
     }
 
-    public void syncData(String bukrs) throws Exception {
+    public void syncData(String bukrs) {
+        gLock.lock();
+        try {
+            log.info("====================syncSapData开始=========================");
+            _syncData(bukrs);
+            log.info("====================syncSapData结束=========================");
+        } catch (Exception e) {
+            log.error("", e);
+        } finally {
+            gLock.unlock();
+        }
+    }
+
+    private void _syncData(String bukrs) throws Exception {
         ObjectNode sapT001 = getByKeyF.compose(keySapT001F).apply(bukrs);
         if (sapT001 == null)
             throw new Exception("Sap[" + bukrs + "],找不到数据!");
@@ -85,10 +98,7 @@ public class SapService extends BaseSapService {
             }
             return sapT001ws;
         };
-
-        log.info("====================syncSapData开始=========================");
         Date syncDate = new Date();
-        byte[] key, data;
 
         JCoDestination dest = getDestination();
         JCoFunction f = getFunction("Z_RFC_PRINT002", dest);
@@ -139,7 +149,6 @@ public class SapService extends BaseSapService {
 
         sapT001.put("syncDate", JappDateTimeUtil.toDateTimeString(syncDate));
         putByKeyF.apply(keySapT001F.apply(sapT001.get("bukrs")), sapT001);
-        log.info("====================syncSapData结束=========================");
     }
 
     private void _putDb(JCoTable t, Function<JCoTable, ObjectNode> f, String keyFiled, Function<Object, byte[]> keyF) {

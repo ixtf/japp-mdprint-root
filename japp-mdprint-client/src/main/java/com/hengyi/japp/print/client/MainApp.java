@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import com.hengyi.japp.common.event.DestroyEvent;
 import com.hengyi.japp.common.event.LogoutEvent;
 import com.hengyi.japp.print.client.Event.SapT001LoginEvent;
+import com.hengyi.japp.print.client.controller.MdController;
 import com.hengyi.japp.print.client.domain.Md;
 import com.hengyi.japp.print.client.domain.SapT001;
 import com.hengyi.japp.print.client.service.OperatorService;
@@ -13,6 +14,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 import static com.hengyi.japp.print.client.Constant.MSG;
 import static com.hengyi.japp.print.client.Constant.eventBus;
@@ -63,22 +66,27 @@ public class MainApp extends Application {
         });
     }
 
-    private static void gotoLogin() throws Exception {
+    private static void gotoLogin() throws IOException {
         Scene scene = new Scene(FXMLLoader.load(MainApp.class.getResource(LOGIN), MSG));
         primaryStage.setScene(scene);
     }
 
-    private static void gotoRoot() throws Exception {
+    private static void gotoRoot() throws IOException {
         rootLayout = FXMLLoader.load(MainApp.class.getResource(ROOT), MSG);
         primaryStage.setScene(new Scene(rootLayout));
         primaryStage.setMaximized(true);
     }
 
-    public static void gotoMd(Md md) throws Exception {
-        rootLayout.setCenter(FXMLLoader.load(MainApp.class.getResource(MD), MSG));
+    public static void gotoMd(Md md) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource(MD));
+        loader.setResources(MSG);
+        rootLayout.setCenter(loader.load());
+        MdController mdController = loader.getController();
+        mdController.initMd(md);
     }
 
-    public static void gotoMds() throws Exception {
+    public static void gotoMds() throws IOException {
         rootLayout.setCenter(FXMLLoader.load(MainApp.class.getResource(MDS), MSG));
     }
 

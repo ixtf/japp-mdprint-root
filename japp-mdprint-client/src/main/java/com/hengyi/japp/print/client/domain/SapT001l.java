@@ -38,4 +38,9 @@ public class SapT001l {
     public void setLgobe(String lgobe) {
         this.lgobe.set(lgobe);
     }
+
+    @Override
+    public String toString() {
+        return getLgort() + "\t" + getLgobe();
+    }
 }

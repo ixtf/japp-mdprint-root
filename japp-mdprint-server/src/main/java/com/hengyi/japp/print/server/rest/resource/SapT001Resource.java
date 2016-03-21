@@ -19,6 +19,18 @@ public class SapT001Resource {
         return Response.ok(operatorService.listSapT001()).build();
     }
 
+    @Path("{bukrs}/sapYmmbancis")
+    @GET
+    public Response listSapYmmbancis(@Valid @NotBlank @PathParam("bukrs") String bukrs) throws Exception {
+        return Response.ok(operatorService.listSapYmmbancis(bukrs)).build();
+    }
+
+    @Path("{bukrs}/sapZpackages")
+    @GET
+    public Response listSapZpackages(@Valid @NotBlank @PathParam("bukrs") String bukrs) throws Exception {
+        return Response.ok(operatorService.listSapZpackages(bukrs)).build();
+    }
+
     @Path("{bukrs}/sapMaras")
     @GET
     public Response listSapMara(@Valid @NotBlank @PathParam("bukrs") String bukrs,

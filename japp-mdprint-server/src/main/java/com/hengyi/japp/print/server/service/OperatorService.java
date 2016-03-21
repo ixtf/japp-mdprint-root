@@ -21,12 +21,40 @@ public class OperatorService {
     public JsonNode listSapT001() throws Exception {
         ArrayNode result = JsonNodeFactory.instance.arrayNode();
         byte[] key = bytes("SapT001_");
-//        byte[] key = bytes("SapYmmbanci_");
-//        byte[] key = bytes("SapZpackage_");
         try (Transaction tx = dbEnv.createReadTransaction()) {
             try (EntryIterator it = db.seek(tx, key)) {
                 for (Entry next : it.iterable()) {
                     if (!string(next.getKey()).startsWith("SapT001_"))
+                        break;
+                    result.add(objectMapper.readValue(next.getValue(), ObjectNode.class));
+                }
+            }
+        }
+        return result;
+    }
+
+    public Object listSapYmmbancis(String bukrs) throws Exception {
+        ArrayNode result = JsonNodeFactory.instance.arrayNode();
+        byte[] key = bytes("SapYmmbanci_");
+        try (Transaction tx = dbEnv.createReadTransaction()) {
+            try (EntryIterator it = db.seek(tx, key)) {
+                for (Entry next : it.iterable()) {
+                    if (!string(next.getKey()).startsWith("SapYmmbanci_"))
+                        break;
+                    result.add(objectMapper.readValue(next.getValue(), ObjectNode.class));
+                }
+            }
+        }
+        return result;
+    }
+
+    public Object listSapZpackages(String bukrs) throws Exception {
+        ArrayNode result = JsonNodeFactory.instance.arrayNode();
+        byte[] key = bytes("SapZpackage_");
+        try (Transaction tx = dbEnv.createReadTransaction()) {
+            try (EntryIterator it = db.seek(tx, key)) {
+                for (Entry next : it.iterable()) {
+                    if (!string(next.getKey()).startsWith("SapZpackage_"))
                         break;
                     result.add(objectMapper.readValue(next.getValue(), ObjectNode.class));
                 }
@@ -62,5 +90,4 @@ public class OperatorService {
             MyService.gLock.unlock();
         }
     }
-
 }

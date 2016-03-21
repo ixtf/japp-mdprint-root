@@ -6,6 +6,7 @@
 package com.hengyi.japp.print.client;
 
 import com.hengyi.japp.print.client.domain.Md;
+import com.hengyi.japp.print.client.exception.AppException;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
@@ -14,7 +15,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
  */
 public class MdValidate {
 
-    public static void checkMdInput(Md md) throws Exception {
+    public static void checkMdInput(Md md) throws AppException {
         StringBuilder sb = new StringBuilder();
         if (md.getHsdat() == null) {
             sb.append("请输入生产日期！\n");
@@ -51,7 +52,7 @@ public class MdValidate {
         }
         String error = sb.toString();
         if (!isBlank(error)) {
-            throw new Exception(error);
+            throw new AppException(error);
         }
     }
 }

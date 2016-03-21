@@ -5,26 +5,32 @@
  */
 package com.hengyi.japp.print.client.controller;
 
+import com.hengyi.japp.print.client.MdValidate;
 import com.hengyi.japp.print.client.Util;
 import com.hengyi.japp.print.client.domain.*;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import com.hengyi.japp.print.client.exception.AppException;
+import javafx.application.Platform;
+import javafx.beans.binding.ObjectBinding;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.converter.BigDecimalStringConverter;
 import javafx.util.converter.NumberStringConverter;
+import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-import static com.hengyi.japp.print.client.Constant.*;
+import static com.hengyi.japp.print.client.Constant.tareF;
 import static com.hengyi.japp.print.client.MainApp.operatorService;
 import static javafx.collections.FXCollections.observableArrayList;
 
@@ -35,7 +41,6 @@ import static javafx.collections.FXCollections.observableArrayList;
  */
 public class MdController implements Initializable {
     private Md md;
-    private final ObjectProperty<SapMara> sapMara = new SimpleObjectProperty<>();
     @FXML
     private Label chargLabel;
     @FXML
@@ -102,75 +107,63 @@ public class MdController implements Initializable {
     private TableColumn<Xd, Number> zrolmgeColumn;
     @FXML
     private TableColumn<Xd, BigDecimal> zsgwghtColumn;
-    @FXML
-    private TableColumn<Xd, BigDecimal> zsnwghtColumn;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         zrolmgeColumn.setCellValueFactory(o -> o.getValue().zrolmgeProperty());
         zsgwghtColumn.setCellValueFactory(o -> o.getValue().zsgwghtProperty());
-        zsnwghtColumn.setCellValueFactory(o -> o.getValue().zsnwghtProperty());
-        initMd();
+        zsgwghtColumn.setCellFactory(TextFieldTableCell.forTableColumn(new BigDecimalStringConverter()));
+        zsgwghtColumn.setOnEditCommit(ev -> ev.getTableView().getItems().get(ev.getTablePosition().getRow()).setZsgwght(ev.getNewValue()));
 
         sapMaraListView.setOnMouseClicked(ev -> {
             if (ev.getClickCount() == 2) {
-                sapMara.set(sapMaraListView.getSelectionModel().getSelectedItem());
-                md.sapMaraProperty().set(sapMara.get());
+                selectSapMara(sapMaraListView.getSelectionModel().getSelectedItem());
+                sapMaraListView.setVisible(false);
+            }
+        });
+    }
+
+    private void selectSapMara(SapMara sapMara) {
+        md.setSapMara(sapMara);
 //                List<SapT001w> sapT001ws = md.getSapMara().getSapT001ws();
 //                sapT001wField.setItems(observableArrayList(sapT001ws));
 //                sapT001wField.setValue(sapT001ws.get(0));
 //                List<SapT001l> sapT001ls = sapT001wField.valueProperty().get().getSapT001ls();
 //                sapT001lField.setItems(observableArrayList(sapT001ls));
 //                sapT001lField.setValue(sapT001ls.get(0));
+        pmLabel.setText(md.getSapMara().getPm());
+        ggLabel.setText(md.getSapMara().getGg());
+        phLabel.setText(md.getSapMara().getPh());
+        djLabel.setText(md.getSapMara().getDj());
+        nxLabel.setText(md.getSapMara().getNx());
+        szLabel.setText(md.getSapMara().getSz());
 
-                matnrField.setText(md.getSapMara().toString());
-                pmLabel.setText(sapMara.get().getPm());
-                ggLabel.setText(sapMara.get().getGg());
-                phLabel.setText(sapMara.get().getPh());
-                djLabel.setText(sapMara.get().getDj());
-                nxLabel.setText(sapMara.get().getNx());
-                szLabel.setText(sapMara.get().getSz());
-                sapMaraListView.setVisible(false);
-            }
-        });
-        configureXdTable();
+        matnrField.setText(md.getSapMara().getMatnr());
     }
 
     @FXML
     private void autoCompleteSapMara(KeyEvent ev) {
         try {
             if (KeyCode.RIGHT.equals(ev.getCode())) {
-                List<SapMara> sapMaras = operatorService.autoCompleteSapMara(matnrField.getText());
+                List<SapMara> sapMaras = md.getSapT001().autoCompleteSapMara(matnrField.getText());
                 sapMaraListView.setItems(observableArrayList(sapMaras));
                 sapMaraListView.setVisible(true);
                 sapMaraListView.getSelectionModel().selectFirst();
             } else if (KeyCode.UP.equals(ev.getCode()) || KeyCode.DOWN.equals(ev.getCode())) {
                 sapMaraListView.fireEvent(new KeyEvent(null, sapMaraListView, KeyEvent.KEY_PRESSED, ev.getCharacter(), ev.getText(), ev.getCode(), false, false, false, false));
             } else if (KeyCode.ENTER.equals(ev.getCode())) {
-                sapMara.set(sapMaraListView.getSelectionModel().getSelectedItem());
+                selectSapMara(sapMaraListView.getSelectionModel().getSelectedItem());
+                sapMaraListView.setVisible(false);
             }
         } catch (Exception ex) {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("错误");
-            alert.setContentText(ex.getLocalizedMessage());
-            alert.showAndWait();
-        }
-    }
-
-    @FXML
-    private void handleAutoXd() {
-        try {
-            operatorService.autoXd(md);
-        } catch (Exception ex) {
-            Util.exceptionDialog(ex);
+            Util.alertDialog(ex);
         }
     }
 
     @FXML
     private void handleSave(ActionEvent e) {
         try {
-//            operatorService.save(md);
-            chargLabel.setText(md.getCharg());
+            operatorService.save(md);
         } catch (Exception ex) {
             Util.exceptionDialog(ex);
         }
@@ -179,8 +172,7 @@ public class MdController implements Initializable {
     @FXML
     private void handlePrintMd(ActionEvent e) {
         try {
-            handleSave(e);
-//            operatorService.printMd(Lists.newArrayList(md));
+            operatorService.printMd(md);
         } catch (Exception ex) {
             Util.exceptionDialog(ex);
         }
@@ -189,64 +181,143 @@ public class MdController implements Initializable {
     @FXML
     private void handlePrintXd(ActionEvent e) {
         try {
-            handleSave(e);
-//            operatorService.printXd(md.getXds());
+            operatorService.printXd(md);
         } catch (Exception ex) {
             Util.exceptionDialog(ex);
         }
     }
 
-    private void initMd() {
-        md = new Md();
-        xdTable.itemsProperty().bindBidirectional(md.xdsProperty());
+    public void initMd(Md _md) {
+        md = _md;
+        chargLabel.textProperty().bind(md.chargProperty());
         hsdatField.valueProperty().bindBidirectional(md.hsdatProperty());
+
+        sapYmmbanciField.valueProperty().bindBidirectional(md.sapYmmbanciProperty());
+        sapYmmbanciField.itemsProperty().bind(md.getSapT001().sapYmmbancisProperty());
+
+        sapT001wField.valueProperty().bindBidirectional(md.sapT001wProperty());
+        sapT001wField.itemsProperty().bind(md.getSapT001().sapT001wsProperty());
+//        sapT001wField.valueProperty().addListener((ov, oldV, newV) -> sapT001wLabel.textProperty().bind(newV.name1Property()));
+//        sapT001wField.setCellFactory(SAPT001WCELLFACTORY);
+
+        sapT001lField.valueProperty().bindBidirectional(md.sapT001lProperty());
+        sapT001lField.itemsProperty().bind(md.getSapT001w().sapT001lsProperty());
+//        sapT001lField.valueProperty().addListener((ov, oldV, newV) -> sapT001lLabel.textProperty().bind(newV.lgobeProperty()));
+//        sapT001lField.setCellFactory(SAPT001LCELLFACTORY);
+
+        sapZpackageField.valueProperty().bindBidirectional(md.sapZpackageProperty());
+        sapZpackageField.itemsProperty().bind(md.getSapT001().sapZpackagesProperty());
+
+        sapYmmzhixField.valueProperty().addListener((ov, oldV, newV) -> sapYmmzhixLabel.setText(newV == null ? null : newV.getYzxwght() + " KG"));
+        sapYmmzhixField.valueProperty().bindBidirectional(md.sapYmmzhixProperty());
+        sapYmmzhixField.itemsProperty().bind(md.getSapT001().sapYmmzhixsProperty());
+//        sapYmmzhixField.setCellFactory(SAPYMMZHIXCELLFACTORY);
+
+        sapYmmtonggField.valueProperty().addListener((ov, oldV, newV) -> sapYmmtonggLabel.setText(newV == null ? null : newV.getZtgwght() + " KG"));
+        sapYmmtonggField.valueProperty().bindBidirectional(md.sapYmmtonggProperty());
+        sapYmmtonggField.itemsProperty().bind(md.getSapT001().sapYmmtonggsProperty());
+//        sapYmmtonggField.setCellFactory(SAPYMMTONGGCELLFACTORY);
         zrolmgeField.textProperty().bindBidirectional(md.zrolmgeProperty(), new NumberStringConverter());
+
+        sapYmmmachField.valueProperty().bindBidirectional(md.sapYmmmachProperty());
+        sapYmmmachField.itemsProperty().bind(md.getSapT001().sapYmmmachsProperty());
+//        sapYmmmachField.valueProperty().addListener((ov, oldV, newV) -> sapYmmmachLabel.setText(newV == null ? null : newV.getZplant()));
+//        sapYmmmachField.setCellFactory(SAPYMMMACHCELLFACTORY);
+
+//        sapYmmcheField.valueProperty().bindBidirectional(md.sapYmmcheProperty());
+//        sapYmmcheField.itemsProperty().bind(md.getSapT001().sapymm());
+//        sapYmmcheField.setCellFactory(SAPYMMCHECELLFACTORY);
+//        sapYmmcheField.valueProperty().addListener((ov, oldV, newV) -> sapYmmcheLabel.setText(newV == null ? null : newV.getZchwght() + " KG"));
+
         zcanmgeField.textProperty().bindBidirectional(md.zcanmgeProperty(), new NumberStringConverter());
         zdzflgField.selectedProperty().bindBidirectional(md.zdzflgProperty());
         zcnwghtField.textProperty().bindBidirectional(md.zcnwghtProperty(), new BigDecimalStringConverter());
+
+        xdTable.itemsProperty().bindBidirectional(md.xdsProperty());
         sumZsgwghtLabel.textProperty().bindBidirectional(md.zsgwghtProperty(), new BigDecimalStringConverter());
         sumZsnwghtLabel.textProperty().bindBidirectional(md.zsnwghtProperty(), new BigDecimalStringConverter());
-        sapYmmbanciField.valueProperty().bindBidirectional(md.sapYmmbanciProperty());
-        List<SapYmmbanci> sapYmmbancis = md.getSapT001().getSapYmmbancis();
-        sapYmmbanciField.setItems(observableArrayList(sapYmmbancis));
-        sapYmmbanciField.setValue(sapYmmbancis.get(0));
-        sapZpackageField.valueProperty().bindBidirectional(md.sapZpackageProperty());
-        List<SapZpackage> sapZpackages = md.getSapT001().getSapZpackages();
-        sapZpackageField.setValue(sapZpackages.get(0));
-        sapZpackageField.setItems(observableArrayList(sapZpackages));
-        sapT001wField.setCellFactory(SAPT001WCELLFACTORY);
-        sapT001wField.valueProperty().addListener((ov, oldV, newV) -> sapT001wLabel.setText(newV == null ? null : newV.getName1()));
-        sapT001wField.valueProperty().bindBidirectional(md.sapT001wProperty());
-        sapT001lField.setCellFactory(SAPT001LCELLFACTORY);
-        sapT001lField.valueProperty().addListener((ov, oldV, newV) -> sapT001lLabel.setText(newV == null ? null : newV.getLgobe()));
-        sapT001lField.valueProperty().bindBidirectional(md.sapT001lProperty());
-        sapYmmzhixField.setCellFactory(SAPYMMZHIXCELLFACTORY);
-        sapYmmzhixField.valueProperty().addListener((ov, oldV, newV) -> sapYmmzhixLabel.setText(newV == null ? null : newV.getYzxwght() + " KG"));
-        sapYmmzhixField.valueProperty().bindBidirectional(md.sapYmmzhixProperty());
-        List<SapYmmzhix> sapYmmzhixs = md.getSapT001().getSapYmmzhixs();
-        sapYmmzhixField.setItems(observableArrayList(sapYmmzhixs));
-        sapYmmzhixField.setValue(sapYmmzhixs.get(0));
-        sapYmmtonggField.setCellFactory(SAPYMMTONGGCELLFACTORY);
-        sapYmmtonggField.valueProperty().addListener((ov, oldV, newV) -> sapYmmtonggLabel.setText(newV == null ? null : newV.getZtgwght() + " KG"));
-        sapYmmtonggField.valueProperty().bindBidirectional(md.sapYmmtonggProperty());
-        List<SapYmmtongg> sapYmmtonggs = md.getSapT001().getSapYmmtonggs();
-        sapYmmtonggField.setItems(observableArrayList(sapYmmtonggs));
-        sapYmmtonggField.setValue(sapYmmtonggs.get(0));
-        sapYmmmachField.setCellFactory(SAPYMMMACHCELLFACTORY);
-        sapYmmmachField.valueProperty().addListener((ov, oldV, newV) -> sapYmmmachLabel.setText(newV == null ? null : newV.getZplant()));
-        sapYmmmachField.valueProperty().bindBidirectional(md.sapYmmmachProperty());
-        List<SapYmmmach> sapYmmmachs = md.getSapT001().getSapYmmmachs();
-        sapYmmmachField.setItems(observableArrayList(sapYmmmachs));
-        sapYmmmachField.setValue(sapYmmmachs.get(0));
-        sapYmmcheField.setCellFactory(SAPYMMCHECELLFACTORY);
-        sapYmmcheField.valueProperty().addListener((ov, oldV, newV) -> sapYmmcheLabel.setText(newV == null ? null : newV.getZchwght() + " KG"));
-        sapYmmcheField.valueProperty().bindBidirectional(md.sapYmmcheProperty());
-//        List<SapYmmche> sapYmmches = queryService.getSapYmmche(md.getSapT001());
-//        sapYmmcheField.setItems(observableArrayList(sapYmmches));
-//    	sapYmmcheField.setValue(sapYmmches.get(0));
+
+        if (StringUtils.isNotBlank(md.getCharg())) {
+            sapMaraListView.setVisible(false);
+            Platform.runLater(() -> matnrField.requestFocus());
+        }
     }
 
-    private void configureXdTable() {
-//        zrolmgeColumn.setCellValueFactory(new PropertyValueFactory<>("zrolmge"));
+    @FXML
+    private void handleAutoXd() {
+        try {
+            MdValidate.checkMdInput(md);
+            md.xdsProperty().clear();
+            md.setXds(FXCollections.observableArrayList(
+                    IntStream.range(0, md.getZcanmge())
+                            .mapToObj(i -> {
+                                Xd xd = new Xd();
+                                xd.zboxsnrProperty().set(i + 1);
+                                xd.sapYmmmachProperty().bind(md.sapYmmmachProperty());
+                                xd.zrolmgeProperty().bind(md.zrolmgeProperty());
+                                return xd;
+                            }).collect(Collectors.toList())
+            ));
+            if (md.getZdzflg()) {
+                zsgwghtColumn.setEditable(false);
+                md.getXds().forEach(xd -> {
+                    xd.zsnwghtProperty().bind(md.zcnwghtProperty());
+                    xd.zsgwghtProperty().bind(new ObjectBinding<BigDecimal>() {
+                        {
+                            bind(xd.zsnwghtProperty(), xd.zrolmgeProperty(), md.sapYmmzhixProperty(), md.sapYmmtonggProperty());
+                        }
+
+                        @Override
+                        protected BigDecimal computeValue() {
+                            return xd.getZsnwght().add(tareF.apply(md, xd));
+                        }
+                    });
+                });
+            } else {
+                zsgwghtColumn.setEditable(true);
+                md.getXds().forEach(xd -> {
+                    xd.zsnwghtProperty().bind(new ObjectBinding<BigDecimal>() {
+                        {
+                            bind(xd.zsgwghtProperty(), xd.zrolmgeProperty(), md.sapYmmzhixProperty(), md.sapYmmtonggProperty());
+                        }
+
+                        @Override
+                        protected BigDecimal computeValue() {
+                            return xd.getZsgwght().add(tareF.apply(md, xd).negate());
+                        }
+                    });
+                });
+            }
+            md.zsgwghtProperty().bind(new ObjectBinding<BigDecimal>() {
+                {
+                    md.getXds().forEach(xd -> bind(xd.zsgwghtProperty()));
+                }
+
+                @Override
+                protected BigDecimal computeValue() {
+                    BigDecimal result = BigDecimal.ZERO;
+                    for (Xd xd : md.getXds()) {
+                        result = result.add(xd.getZsgwght());
+                    }
+                    return result;
+                }
+            });
+            md.zsnwghtProperty().bind(new ObjectBinding<BigDecimal>() {
+                {
+                    md.getXds().forEach(xd -> bind(xd.zsnwghtProperty()));
+                }
+
+                @Override
+                protected BigDecimal computeValue() {
+                    BigDecimal result = BigDecimal.ZERO;
+                    for (Xd xd : md.getXds()) {
+                        result = result.add(xd.getZsnwght());
+                    }
+                    return result;
+                }
+            });
+        } catch (AppException e) {
+            Util.alertDialog(e);
+        }
     }
 }

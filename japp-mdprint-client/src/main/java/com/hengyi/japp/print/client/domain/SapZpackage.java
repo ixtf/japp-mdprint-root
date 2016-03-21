@@ -38,4 +38,9 @@ public class SapZpackage {
     public void setText(String text) {
         this.text.set(text);
     }
+
+    @Override
+    public String toString() {
+        return getValue() + "\t" + getText();
+    }
 }

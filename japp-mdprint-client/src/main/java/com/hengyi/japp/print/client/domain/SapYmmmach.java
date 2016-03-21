@@ -38,4 +38,9 @@ public class SapYmmmach {
     public void setZplant(String zplant) {
         this.zplant.set(zplant);
     }
+
+    @Override
+    public String toString() {
+        return getZmcnum() + "\t" + getZplant();
+    }
 }

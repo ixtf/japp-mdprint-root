@@ -14,11 +14,10 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import static com.hengyi.japp.print.server.Constant.getByKeyF;
 import static com.hengyi.japp.print.server.Constant.keySapT001F;
+import static com.hengyi.japp.print.server.MyService.gLock;
 import static com.hengyi.japp.print.server.MyService.sapService;
 
 /**
@@ -26,7 +25,6 @@ import static com.hengyi.japp.print.server.MyService.sapService;
  */
 public class JobService {
     private Logger log = LoggerFactory.getLogger(getClass());
-    private static final Lock lock = new ReentrantLock();
     //已经加入周期同步的公司
     private static final Set<String> syncBukrsSet = Sets.newConcurrentHashSet();
     private ScheduledExecutorService ses;
@@ -53,7 +51,7 @@ public class JobService {
     @Subscribe
     public void onEvent(SyncSapDataEvent ev) {
         if (syncBukrsSet.contains(ev.getBukrs())) return;
-        lock.lock();
+        gLock.lock();
         try {
             if (syncBukrsSet.contains(ev.getBukrs())) return;
             ObjectNode sapT001 = getByKeyF.compose(keySapT001F).apply(ev.getBukrs());
@@ -72,7 +70,7 @@ public class JobService {
         } catch (Exception e) {
             log.error("", e);
         } finally {
-            lock.unlock();
+            gLock.unlock();
         }
     }
 
