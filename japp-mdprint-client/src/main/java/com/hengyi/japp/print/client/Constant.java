@@ -44,7 +44,6 @@ public class Constant {
         public static final String MD = "/fxml/md.fxml";
         public static final String MDS = "/fxml/mds.fxml";
         public static final String MD_SEARCH = "/fxml/md_search.fxml";
-        public static final String MD_PRINT = "/fxml/md_print_3000.fxml";
     }
 
     public static final BiFunction<Md, Xd, BigDecimal> tareF = (md, xd) -> md.getSapYmmzhix().getYzxwght()
